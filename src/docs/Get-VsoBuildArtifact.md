@@ -7,38 +7,55 @@ schema: 2.0.0
 # Get-VsoBuildArtifact
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get-VsoBuildArtifact will search and download build artifact from 
+Visual Studio Online. In order to use this Command, you will need to use Personal Access Token (PAT).
+PAT allows user to assign permission to a credential without exposing login password
+to the application. User can revoke permission given to PAT at anytime.
+
 
 ## SYNTAX
 
-### File
+### Download File(s) from Build artifact
 ```
 Get-VsoBuildArtifact [-vstsAccount] <String> [-projectName] <String> [-buildNumber] <String> [-token] <String>
  [-searchFile] <String> [[-outputPath] <String>]
 ```
 
-### Container
+### Download whole Build artifact as Zip file
 ```
 Get-VsoBuildArtifact [-vstsAccount] <String> [-projectName] <String> [-buildNumber] <String> [-token] <String>
  [[-outputPath] <String>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+
+You can download one or more files according to search pattern from build drop folder in VSO.
+You can also download drop folder as a zip file from VSO. 
+
+In order to download one or more files, you have to specify the search pattern. 
 
 ## EXAMPLES
 
 ### Example 1
 ```
-PS C:\> {{ Add example code here }}
+PS C:\> Get-VsoBuildArtifact -vstsAccount "MyAccount" -projectName "MyProject" -buildNumber "v1 20161011" -token "PATTOKEN" -searchFile "*.zip" -outputPath C:\temp
 ```
 
-{{ Add example description here }}
+Download all *.zip files from drop folder of the build "v1 20161011" drop folder.
+
+### Example 2
+```
+PS C:\> Get-VsoBuildArtifact -vstsAccount "MyAccount" -projectName "MyProject" -buildNumber "v1 20161011" -token "PATTOKEN"  -outputPath C:\temp
+```
+
+Download drop folder of the build "v1 20161011" drop folder as a zip file.
 
 ## PARAMETERS
 
 ### -buildNumber
-{{Fill buildNumber Description}}
+Build Number to download. If you don't specify the build number, the command will return
+latest build. If the Build Number return more than 1 results, the command will return only
+the latest build of the results.
 
 ```yaml
 Type: String
@@ -53,7 +70,7 @@ Accept wildcard characters: False
 ```
 
 ### -outputPath
-{{Fill outputPath Description}}
+Output Path location of the files.
 
 ```yaml
 Type: String
@@ -68,7 +85,7 @@ Accept wildcard characters: False
 ```
 
 ### -projectName
-{{Fill projectName Description}}
+Name of the Visual Studio Online project. 
 
 ```yaml
 Type: String
@@ -83,7 +100,7 @@ Accept wildcard characters: False
 ```
 
 ### -searchFile
-{{Fill searchFile Description}}
+Build artifact to search. For example, *.zip will search all zip file in the build artifact.
 
 ```yaml
 Type: String
@@ -98,7 +115,7 @@ Accept wildcard characters: False
 ```
 
 ### -token
-{{Fill token Description}}
+Personal Access Token (PAT) from Visual Studio Online.
 
 ```yaml
 Type: String
@@ -113,7 +130,8 @@ Accept wildcard characters: False
 ```
 
 ### -vstsAccount
-{{Fill vstsAccount Description}}
+Visual Studio Online account name. This is reflected in the domain of your visual studio.
+For example https://**myaccount**.visualstudio.com. **myaccount** is the account name.
 
 ```yaml
 Type: String
@@ -134,7 +152,7 @@ Accept wildcard characters: False
 
 ## OUTPUTS
 
-### System.Object
+### None
 
 ## NOTES
 

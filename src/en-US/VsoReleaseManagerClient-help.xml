@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml">
+
+<command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<command:details><command:name>Get-VsoBuildArtifact</command:name>
+<command:verb>Get</command:verb>
+<command:noun>VsoBuildArtifact</command:noun>
+<maml:description><maml:para>Get-VsoBuildArtifact will search and download build artifact from  Visual Studio Online. In order to use this Command, you will need to use Personal Access Token (PAT). PAT allows user to assign permission to a credential without exposing login password to the application. User can revoke permission given to PAT at anytime.
+</maml:para>
+</maml:description>
+</command:details>
+<maml:description><maml:para>You can download one or more files according to search pattern from build drop folder in VSO. You can also download drop folder as a zip file from VSO. 
+</maml:para>
+<maml:para>In order to download one or more files, you have to specify the search pattern.
+</maml:para>
+</maml:description>
+<command:syntax><command:syntaxItem><maml:name>Get-VsoBuildArtifact</maml:name>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none"><maml:name>vstsAccount</maml:name>
+<maml:Description><maml:para>Visual Studio Online account name. This is reflected in the domain of your visual studio. For example https:// myaccount .visualstudio.com. myaccount is the account name.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none"><maml:name>projectName</maml:name>
+<maml:Description><maml:para>Name of the Visual Studio Online project.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none"><maml:name>buildNumber</maml:name>
+<maml:Description><maml:para>Build Number to download. If you don't specify the build number, the command will return latest build. If the Build Number return more than 1 results, the command will return only the latest build of the results.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none"><maml:name>token</maml:name>
+<maml:Description><maml:para>Personal Access Token (PAT) from Visual Studio Online.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none"><maml:name>searchFile</maml:name>
+<maml:Description><maml:para>Build artifact to search. For example, *.zip will search all zip file in the build artifact.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none"><maml:name>outputPath</maml:name>
+<maml:Description><maml:para>Output Path location of the files.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+</command:syntaxItem>
+</command:syntax>
+<command:parameters><command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none"><maml:name>buildNumber</maml:name>
+<maml:Description><maml:para>Build Number to download. If you don't specify the build number, the command will return latest build. If the Build Number return more than 1 results, the command will return only the latest build of the results.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none"><maml:name>outputPath</maml:name>
+<maml:Description><maml:para>Output Path location of the files.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none"><maml:name>projectName</maml:name>
+<maml:Description><maml:para>Name of the Visual Studio Online project.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none"><maml:name>searchFile</maml:name>
+<maml:Description><maml:para>Build artifact to search. For example, *.zip will search all zip file in the build artifact.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none"><maml:name>token</maml:name>
+<maml:Description><maml:para>Personal Access Token (PAT) from Visual Studio Online.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+<command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none"><maml:name>vstsAccount</maml:name>
+<maml:Description><maml:para>Visual Studio Online account name. This is reflected in the domain of your visual studio. For example https:// myaccount .visualstudio.com. myaccount is the account name.
+</maml:para>
+</maml:Description>
+<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+<dev:type><maml:name>String</maml:name>
+<maml:uri /></dev:type>
+<dev:defaultValue>None</dev:defaultValue>
+</command:parameter>
+</command:parameters>
+<command:inputTypes><command:inputType><dev:type><maml:name>None</maml:name>
+</dev:type>
+<maml:description><maml:para>
+</maml:para>
+</maml:description>
+</command:inputType>
+</command:inputTypes>
+<command:returnValues><command:returnValue><dev:type><maml:name>None</maml:name>
+</dev:type>
+<maml:description><maml:para>
+</maml:para>
+</maml:description>
+</command:returnValue>
+</command:returnValues>
+<maml:alertSet><maml:alert><maml:para>
+</maml:para>
+</maml:alert>
+</maml:alertSet>
+<command:examples><command:example><maml:title>Example 1</maml:title>
+<dev:code>PS C:\&gt; Get-VsoBuildArtifact -vstsAccount "MyAccount" -projectName "MyProject" -buildNumber "v1 20161011" -token "PATTOKEN" -searchFile "*.zip" -outputPath C:\temp</dev:code>
+<dev:remarks><maml:para>Download all *.zip files from drop folder of the build "v1 20161011" drop folder.
+</maml:para>
+</dev:remarks>
+</command:example>
+<command:example><maml:title>Example 2</maml:title>
+<dev:code>PS C:\&gt; Get-VsoBuildArtifact -vstsAccount "MyAccount" -projectName "MyProject" -buildNumber "v1 20161011" -token "PATTOKEN"  -outputPath C:\temp</dev:code>
+<dev:remarks><maml:para>Download drop folder of the build "v1 20161011" drop folder as a zip file.
+</maml:para>
+</dev:remarks>
+</command:example>
+</command:examples>
+<command:relatedLinks></command:relatedLinks>
+</command:command>
+</helpItems>
