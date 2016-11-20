@@ -21,14 +21,16 @@ function Get-VsoBuildId
 
       [Parameter(Mandatory=$true)]
       [string]$token
-   )
+   )   
 
+   # Start query
    $queryCmd = @{}
    $queryCmd.Add("api-version","2.0")
    $queryCmd.Add("statusFilter","completed")
    $queryCmd.Add("buildNumber",$buildNumber)
-
+   
    $method = "build/builds"
+
    $uri =  Get-ApiUrl -account $vstsAccount -project $projectName -method $method -query $queryCmd;
    $result = Invoke-RestGet -uri $uri -token $token
    if ($result.count -eq 0)

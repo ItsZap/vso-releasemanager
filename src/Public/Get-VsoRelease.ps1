@@ -22,4 +22,6 @@ function Get-VsoRelease
       [Parameter(Mandatory=$true)]
       [string]$token
    )
+
+   $method = "Release/releases"
 }

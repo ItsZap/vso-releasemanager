@@ -14,7 +14,7 @@ function Get-ApiUrl {
         [string]
         $account,
         # Project
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$false)]
         [string]
         $project,
         # Method
@@ -27,10 +27,17 @@ function Get-ApiUrl {
         $query
     )
 
+   $vsoApiUrl = @()
+   $vsoApiUrl += "https://{0}.visualstudio.com/DefaultCollection" -f $account
+   if(-not [string]::IsNullOrEmpty($project)){
+       $vsoApiUrl += $project
+   }
+   $vsoApiUrl += "_apis/{0}" -f $method
+
    $queryStr = @()
    $query.GetEnumerator() |% {
       $queryStr += "$($_.Name)=$($_.Value)"
    }
 
-   return $script:VSO_API_FORMAT -f $account,$project,$method + "?" + $($queryStr -join "&")
+   return $($vsoApiUrl -join "/")+ "?" + $($queryStr -join "&")
 }

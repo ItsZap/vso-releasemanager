@@ -9,20 +9,28 @@
 
 function Get-VsoBuildArtifact {
     param(
-      [Parameter(Mandatory=$true)]
+      [Parameter(Mandatory=$true, ParameterSetName="Container", Position=0)]
+      [Parameter(Mandatory=$true, ParameterSetName="File", Position=0)]
       [string]$vstsAccount,
 
-      [Parameter(Mandatory=$true)]
+      [Parameter(Mandatory=$true, ParameterSetName="Container", Position=1)]
+      [Parameter(Mandatory=$true, ParameterSetName="File", Position=1)]
       [string]$projectName,
 
-      [Parameter(Mandatory=$true)]
+      [Parameter(Mandatory=$true, ParameterSetName="Container", Position=2)]
+      [Parameter(Mandatory=$true, ParameterSetName="File", Position=2)]
       [string]$buildNumber,
 
-      [Parameter(Mandatory=$true)]
+      [Parameter(Mandatory=$true, ParameterSetName="Container", Position=3)]
+       [Parameter(Mandatory=$true, ParameterSetName="File", Position=3)]
       [string]$token,
 
-      [Parameter(Mandatory=$false)]
-      [string]$outputPath
+      [Parameter(Mandatory=$true, ParameterSetName="File", Position=4)]
+       [string]$searchFile,
+
+      [Parameter(Mandatory=$false, ParameterSetName="Container", Position=6)]
+      [Parameter(Mandatory=$false, ParameterSetName="File", Position=6)]
+      [string]$outputPath       
    )
 
    $result = Get-VsoBuildId -vstsAccount $vstsAccount -projectName $projectName -buildNumber $buildNumber -token $token
@@ -37,36 +45,57 @@ function Get-VsoBuildArtifact {
        throw "Unable to locate Build ID for Build Number $($buildNumber)"
    }
 
-   # Start Query
-   $queryCmd = @{}
-   $queryCmd.Add("api-version","2.0")
+    # Start Query
+    $queryCmd = @{}
+    $queryCmd.Add("api-version","2.0")
 
-   $method = "build/builds/{0}/artifacts" -f $buildId
-   $uri =  Get-ApiUrl -account $vstsAccount -project $projectName -method $method -query $queryCmd;
-   $result = Invoke-RestGet -uri $uri -token $token
-   if ($result.count -eq 0)
-   {
-      throw "Unable to locate Build Artifacts for Build Number $($buildNumber)"
-   }
-   
-   # Download Url
-   $source= $result.value[0].resource.downloadURl
-   $target = Join-Path $outputPath "$($buildNumber).zip"
+    $method = "build/builds/{0}/artifacts" -f $buildId
+    $uri =  Get-ApiUrl -account $vstsAccount -project $projectName -method $method -query $queryCmd;
+    $result = Invoke-RestGet -uri $uri -token $token
+    if ($result.count -eq 0)
+    {
+        throw "Unable to locate Build Artifacts for Build Number $($buildNumber)"
+    }
 
-    # $job = Start-Job {
-    #     $wc = New-Object net.webclient
-    #     $wc.Headers.Add('Authorization', ("Basic {0}" -f $using:base64AuthInfo))
-    #     $wc.Downloadfile($using:source, $using:target)
-    # }
+    if($PSCmdlet.ParameterSetName -eq "Container"){
+        # Download Url
+        $source= $result.value[0].resource.downloadURl
+        $target = Join-Path $outputPath "$($buildNumber).zip"
 
-    # $i = 0
-    # while ((get-job $job.Id).State -eq "Running") {        
-    #     Write-Host "Downloading $($i*2) (seconds)" -NoNewline
-    #     set-ConsolePosition -x 0
-    #     $i += 1
-    #     Start-Sleep -Seconds 2
-    # }
+        Invoke-DownloadFile -source $source -target $target -token $token
+        Write-Host "Download completed!"
+    } 
 
-    # set-ConsolePosition -x 0
-    Write-Host "Download completed!"
+    if($PSCmdlet.ParameterSetName -eq "File"){
+       if($result.value[0].resource.data -match "\#\/(\d+?)\/drop")
+       {
+           $containerId = $Matches[1]
+        
+           #Query container
+           $queryContainer = @{}
+           $queryContainer.Add("itemPath","drop")
+
+           $method = "resources/Containers/{0}" -f $containerId
+
+           $uri = Get-ApiUrl -account $vstsAccount -method $method -query $queryContainer
+           write-host $uri
+
+           $result = Invoke-RestGet -uri $uri -token $token
+
+           if($result.count -eq 0){
+               throw "Unable to find Build Artifacts content for Build Number $($buildNumber)"
+           }
+
+           $result.value |? { 
+               $_.itemType -eq "file" -and 
+                [System.Web.HttpUtility]::UrlDecode($_.contentLocation) -like "*$($searchFile)"
+           } |%{
+               $target = Join-Path $outputPath $(Split-Path $_.path -Leaf)
+               $source = $_.contentLocation
+               write-host $source
+               Invoke-DownloadFile -source $source -target $target -token $token
+               Write-Host "Download completed!"
+           }
+       }
+    }
 }
