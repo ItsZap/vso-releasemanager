@@ -21,8 +21,8 @@ function Get-VsoBuildArtifact {
       [Parameter(Mandatory=$true, ParameterSetName="File", Position=2)]
       [string]$buildNumber,
 
-      [Parameter(Mandatory=$true, ParameterSetName="Container", Position=3)]
-       [Parameter(Mandatory=$true, ParameterSetName="File", Position=3)]
+      [Parameter(Mandatory=$false, ParameterSetName="Container", Position=3)]
+       [Parameter(Mandatory=$false, ParameterSetName="File", Position=3)]
       [string]$token,
 
       [Parameter(Mandatory=$true, ParameterSetName="File", Position=4)]
@@ -33,7 +33,11 @@ function Get-VsoBuildArtifact {
       [string]$outputPath       
    )
 
-   $result = Get-VsoBuildId -vstsAccount $vstsAccount -projectName $projectName -buildNumber $buildNumber -token $token
+   if([string]::IsNullOrEmpty($token)){
+       $token = Read-VsoToken -vstsAccount $vstsAccount 
+   }
+
+   $result = Find-VsoBuild -vstsAccount $vstsAccount -projectName $projectName -buildNumber $buildNumber -token $token
    
    $buildId = 0
    if($result.count -gt 1){

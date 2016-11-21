@@ -7,7 +7,7 @@
     Copyright © 2016, ItsZap Inc, Riwut Libinuko (cakriwut@gmail.com). All Rights Reserved
 #############################################>
 
-function Get-VsoBuildId
+function Find-VsoBuild
 {
    param(
       [Parameter(Mandatory=$true)]
@@ -19,9 +19,13 @@ function Get-VsoBuildId
       [Parameter(Mandatory=$true)]
       [string]$buildNumber,
 
-      [Parameter(Mandatory=$true)]
+      [Parameter(Mandatory=$false)]
       [string]$token
    )   
+
+   if([string]::IsNullOrEmpty($token)){
+       $token = Read-VsoToken -vstsAccount $vstsAccount 
+   }
 
    # Start query
    $queryCmd = @{}
@@ -35,7 +39,7 @@ function Get-VsoBuildId
    $result = Invoke-RestGet -uri $uri -token $token
    if ($result.count -eq 0)
    {
-      throw "Unable to locate Build ID for Build Number $($buildNumber)"
+      throw "Unable to locate Build Number $($buildNumber)"
    }
  
    return $result

@@ -12,23 +12,21 @@ Visual Studio Online. In order to use this Command, you will need to use Persona
 PAT allows user to assign permission to a credential without exposing login password
 to the application. User can revoke permission given to PAT at anytime.
 
-
 ## SYNTAX
 
-### Download File(s) from Build artifact
+### File
 ```
 Get-VsoBuildArtifact [-vstsAccount] <String> [-projectName] <String> [-buildNumber] <String> [-token] <String>
- [-searchFile] <String> [[-outputPath] <String>]
+ [-searchFile] <String> [[-outputPath] <String>] [<CommonParameters>]
 ```
 
-### Download whole Build artifact as Zip file
+### Container
 ```
 Get-VsoBuildArtifact [-vstsAccount] <String> [-projectName] <String> [-buildNumber] <String> [-token] <String>
- [[-outputPath] <String>]
+ [[-outputPath] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 You can download one or more files according to search pattern from build drop folder in VSO.
 You can also download drop folder as a zip file from VSO. 
 
@@ -145,10 +143,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
 ## INPUTS
 
 ### None
-
 
 ## OUTPUTS
 
